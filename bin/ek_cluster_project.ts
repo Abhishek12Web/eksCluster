@@ -1,21 +1,11 @@
 #!/usr/bin/env node
+import { EkClusterProjectStack } from '../lib/ek_cluster_project-stack';
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { EkClusterProjectStack } from '../lib/ek_cluster_project-stack';
 
 const app = new cdk.App();
-new EkClusterProjectStack(app, 'EkClusterProjectStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
+const account = app.node.tryGetContext('account') || process.env.CDK_INTEG_ACCOUNT || process.env.CDK_DEFAULT_ACCOUNT;
+const primaryRegion = { account: account, region: 'eu-central-1' };
+// const secondaryRegion = {account: account, region: 'eu-central 2'};
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
-
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+new EkClusterProjectStack(app, `ClusterStack-${primaryRegion.region}`, { env: primaryRegion })
