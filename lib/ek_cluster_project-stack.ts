@@ -36,8 +36,8 @@ export class EkClusterProjectStack extends cdk.Stack {
     });
 
     // Creating the EKS Cluster
-    const cluster = new eks.Cluster(this, 'dmoove-eksCluster', {
-      clusterName: 'dmooveEks',
+    const cluster = new eks.Cluster(this, 'test-eksCluster', {
+      clusterName: 'TestEks',
       mastersRole: clusterAdmin,
       version: eks.KubernetesVersion.V1_23,
       kubectlLayer: new KubectlV23Layer(this, 'kubectl'),
